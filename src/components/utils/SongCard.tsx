@@ -1,5 +1,4 @@
 import {
-    Badge,
     Box,
     Flex,
     Heading,
@@ -10,12 +9,12 @@ import {
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
-import { numberFormatter, timeFormatter } from "../../helpers/formatter";
 import { TrackInfo } from "../../types";
 import DoorDashFavorite from "./SongCardLoader";
-import { RiUserFollowLine, RiPlayCircleLine } from "react-icons/ri";
 import Stats from "./Stats";
 import Tags from "./Tags";
+import { customCoverTemplate, isTemplateImage } from "../../helpers/utils";
+import CardLayout from "./CardLayout";
 
 interface Props {
     artist: string;
@@ -49,31 +48,28 @@ const SongCard = ({ artist, title }: Props) => {
     }
 
     return (
-        <LinkBox
-            as="div"
-            d="flex"
-            flexDirection="column"
-            p="8"
-            shadow="lg"
-            border="1px"
-            borderColor="gray.50"
-            maxW="270px"
-            bg="white"
-        >
+        <CardLayout>
             {/* {JSON.stringify(data, null, 2)} */}
             {data?.album ? (
-                <Image src={data?.album?.image[2]["#text"]} alt={data?.name} />
+                <Image
+                    src={
+                        isTemplateImage(data?.album?.image[2]["#text"])
+                            ? customCoverTemplate
+                            : data?.album?.image[2]["#text"]
+                    }
+                    alt={data?.name}
+                />
             ) : (
                 <Box d="flex" justifyContent="center" alignItems="center">
                     <Image
-                        src="/assets/images/cover_template.jpg"
+                        src={customCoverTemplate}
                         alt={data?.name}
                         w="174px"
                         h="174px"
                     />
                 </Box>
             )}
-            <Flex>
+            <Flex direction="column" mt="4">
                 <Heading as="h3" fontSize="lg" mt="3" fontWeight="600">
                     <LinkOverlay href={data?.url}>{data?.name}</LinkOverlay>
                 </Heading>
@@ -97,7 +93,7 @@ const SongCard = ({ artist, title }: Props) => {
                 />
                 <Tags tag={data?.toptags.tag} />
             </Flex>
-        </LinkBox>
+        </CardLayout>
     );
 };
 

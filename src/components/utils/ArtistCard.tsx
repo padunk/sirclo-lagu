@@ -18,6 +18,8 @@ import Stats from "./Stats";
 import Tags from "./Tags";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import { useState } from "react";
+import { customAvatarTemplate, isTemplateImage } from "../../helpers/utils";
+import CardLayout from "./CardLayout";
 
 interface Props {
     artist: string;
@@ -50,20 +52,15 @@ const ArtistCard = ({ artist }: Props) => {
     }
 
     return (
-        <LinkBox
-            as="div"
-            display="flex"
-            flexDirection="column"
-            p="8"
-            shadow="lg"
-            border="1px"
-            borderColor="gray.50"
-            maxW="270px"
-            bg="white"
-            m="auto"
-        >
+        <CardLayout>
             <Box display="flex" justifyContent="center" alignItems="center">
-                <Image src={data?.image[2]["#text"]} />
+                <Image
+                    src={
+                        isTemplateImage(data?.image[2]["#text"])
+                            ? customAvatarTemplate
+                            : data?.image[2]["#text"]
+                    }
+                />
             </Box>
             <Flex direction="column" mt="4">
                 <LinkOverlay href={data?.url}>
@@ -88,11 +85,11 @@ const ArtistCard = ({ artist }: Props) => {
                     Similar Artists:
                 </Button>
 
-                {expandSimilarArtist && (
-                    <SimilarArtist artist={data?.similar.artist!} />
+                {expandSimilarArtist && data?.similar.artist && (
+                    <SimilarArtist artist={data?.similar.artist} />
                 )}
             </Flex>
-        </LinkBox>
+        </CardLayout>
     );
 };
 
