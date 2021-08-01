@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
-import { DataTrack } from "../../types";
+import { TopTrack } from "../../types";
 import ListLoader from "../utils/ListLoader";
 import SongCard from "../utils/SongCard";
 
@@ -10,7 +10,7 @@ interface Props {}
 
 const SongList = (props: Props) => {
     const getTopTracks = async () => {
-        let result: DataTrack;
+        let result: { data: { tracks: TopTrack } };
         try {
             result = await axios.get(
                 `http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${
@@ -20,10 +20,10 @@ const SongList = (props: Props) => {
         } catch (error) {
             throw new Error("problem getting top tracks");
         }
-        return result;
+        return result.data.tracks;
     };
 
-    const { isLoading, isError, data, error } = useQuery<DataTrack, Error>(
+    const { isLoading, isError, data, error } = useQuery<TopTrack, Error>(
         "topTracks",
         getTopTracks
     );
@@ -37,8 +37,15 @@ const SongList = (props: Props) => {
     }
 
     return (
-        <Flex flexWrap="wrap" justifyContent="space-around" p="12">
-            {data?.data.tracks.track.map((d) => {
+        <Flex
+            flexWrap="wrap"
+            justifyContent="space-around"
+            alignItems="flex-start"
+            p="12"
+            bg="gray.50"
+            minH="100vh"
+        >
+            {data?.track.map((d) => {
                 return (
                     <SongCard
                         key={`${d.name}-${d.artist.name}`}
