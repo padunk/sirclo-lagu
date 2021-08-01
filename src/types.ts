@@ -1,3 +1,4 @@
+// Please add the property in alphabetical order!
 // General
 type Image = {
     "#text": string;
@@ -20,9 +21,9 @@ type Attributes = {
 type TrackBase = {
     name: string;
     duration: string;
-    playcount: string;
     listeners: string;
     mbid: string;
+    playcount: string;
     url: string;
 };
 
@@ -32,39 +33,49 @@ type TrackStreamable = {
 };
 
 type TrackWiki = {
-    published: string;
     content: string;
+    published: string;
     summary: string;
 };
 
 type TrackAlbum = {
-    artist: string;
-    url: string;
-    mbid: string;
-    title: string;
     "@attr": {
         position: number;
     };
+    artist: string;
     image: Image[];
+    mbid: string;
+    title: string;
+    url: string;
+};
+
+type TrackMatch = {
+    artist: string;
+    image: Image[];
+    listeners: string;
+    mbid: string;
+    name: string;
+    streamable: string;
+    url: string;
 };
 
 interface Track extends TrackBase {
-    streamable: TrackStreamable;
     artist: ArtistBase;
     image: Image[];
+    streamable: TrackStreamable;
 }
 
 export interface TopTrack {
-    track: Track[];
     "@attr": Attributes;
+    track: Track[];
 }
 
 export interface TrackInfo extends TrackBase {
+    album: TrackAlbum;
     artist: ArtistBase;
     streamable: TrackStreamable;
     toptags: { tag: Tag[] };
     wiki: TrackWiki;
-    album: TrackAlbum;
 }
 
 // Artist
@@ -75,51 +86,79 @@ type ArtistBase = {
 };
 
 type ArtistBio = {
+    content: string;
     links: {
         link: {
-            rel: string;
             href: string;
+            rel: string;
         };
     };
-    content: string;
     published: string;
     summary: string;
 };
 
 export type ArtistSimilar = {
+    image: Image[];
     name: string;
     url: string;
-    image: Image[];
 };
 
-interface Artist extends ArtistBase {
-    playcount: string;
+interface ArtistMatch extends ArtistBase {
+    image: Image[];
     listeners: string;
     streamable: string;
-    image: Image[];
+}
+
+interface Artist extends ArtistMatch {
+    playcount: string;
 }
 
 export interface TopArtist {
-    artist: Artist[];
     "@attr": Attributes;
+    artist: Artist[];
 }
 
 export interface ArtistInfo extends ArtistBase {
     bio: ArtistBio;
+    image: Image[];
     ontour: number;
+    similar: {
+        artist: ArtistSimilar[];
+    };
     stats: {
         playcount: number;
         listeners: number;
     };
-    image: Image[];
-    similar: { artist: ArtistSimilar[] };
+    streamable: string;
     tags: {
         tag: Tag[];
     };
-    streamable: string;
 }
 
+// Search
+export type SearchBase = {
+    "opensearch:Query": {
+        "#text": string;
+        role: string;
+        searchTerms?: string;
+        startPage: string;
+    };
+    "opensearch:totalResults": string;
+    "opensearch:startIndex": string;
+    "opensearch:itemsPerPage": string;
+    artistmatches?: {
+        artist: ArtistMatch[];
+    };
+    "@attr": {
+        for?: string;
+    };
+    trackmatches?: {
+        track: TrackMatch[];
+    };
+};
+
+// states
 export enum ShowBy {
-    Track = "topTrack",
     Artist = "topArtist",
+    Track = "topTrack",
 }
