@@ -14,6 +14,8 @@ import { numberFormatter, timeFormatter } from "../../helpers/formatter";
 import { TrackInfo } from "../../types";
 import DoorDashFavorite from "./SongCardLoader";
 import { RiUserFollowLine, RiPlayCircleLine } from "react-icons/ri";
+import Stats from "./Stats";
+import Tags from "./Tags";
 
 interface Props {
     artist: string;
@@ -54,61 +56,47 @@ const SongCard = ({ artist, title }: Props) => {
             p="8"
             shadow="lg"
             border="1px"
-            borderColor="gray.100"
+            borderColor="gray.50"
             maxW="270px"
+            bg="white"
         >
             {/* {JSON.stringify(data, null, 2)} */}
             {data?.album ? (
                 <Image src={data?.album?.image[2]["#text"]} alt={data?.name} />
             ) : (
-                <Image
-                    src="/assets/images/cover_template.jpg"
-                    alt={data?.name}
-                    w="174px"
-                />
-            )}
-            <Heading as="h3" fontSize="lg" mt="3">
-                <LinkOverlay href={data?.url}>{data?.name}</LinkOverlay>
-            </Heading>
-            <Heading
-                as="h2"
-                fontSize="lg"
-                color="gray.600"
-                fontWeight="light"
-                mt="1"
-            >
-                <Box as="a" href={data?.artist.url}>
-                    {data?.artist.name}
+                <Box d="flex" justifyContent="center" alignItems="center">
+                    <Image
+                        src="/assets/images/cover_template.jpg"
+                        alt={data?.name}
+                        w="174px"
+                        h="174px"
+                    />
                 </Box>
-            </Heading>
-            {/* {data?.duration && (
+            )}
+            <Flex>
+                <Heading as="h3" fontSize="lg" mt="3" fontWeight="600">
+                    <LinkOverlay href={data?.url}>{data?.name}</LinkOverlay>
+                </Heading>
+                <Heading
+                    as="h2"
+                    fontSize="lg"
+                    color="gray.700"
+                    fontWeight="light"
+                    mt="1"
+                >
+                    <Box as="a" href={data?.artist.url}>
+                        {data?.artist.name}
+                    </Box>
+                </Heading>
+                {/* {data?.duration && (
                 <Box mt="2">{timeFormatter(Number(data?.duration))}</Box>
             )} */}
-            <Box d="flex" justifyContent="space-between" mt="2">
-                <Box as="span" fontSize="sm">
-                    <RiPlayCircleLine />{" "}
-                    {numberFormatter(Number(data?.playcount))}
-                </Box>
-                <Box as="span" fontSize="sm">
-                    <RiUserFollowLine />{" "}
-                    {numberFormatter(Number(data?.listeners))}
-                </Box>
-            </Box>
-            <Box d="flex" flexWrap="wrap" w="full">
-                {data?.toptags.tag.map((t) => {
-                    return (
-                        <Box as="a" href={t.url} key={t.name} mr="1">
-                            <Badge
-                                px="2"
-                                colorScheme="pink"
-                                borderRadius="full"
-                            >
-                                {t.name}
-                            </Badge>
-                        </Box>
-                    );
-                })}
-            </Box>
+                <Stats
+                    playcount={data?.playcount}
+                    listeners={data?.listeners}
+                />
+                <Tags tag={data?.toptags.tag} />
+            </Flex>
         </LinkBox>
     );
 };
