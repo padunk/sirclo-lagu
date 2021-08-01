@@ -4,6 +4,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { TopArtist } from "../../types";
 import ArtistCard from "../utils/ArtistCard";
+import ListLayout from "../utils/ListLayout";
 import ListLoader from "../utils/ListLoader";
 
 interface Props {}
@@ -28,20 +29,16 @@ const ArtistList = (props: Props) => {
         getTopArtists
     );
 
-    if (isLoading) {
-        return <ListLoader />;
-    }
-
     if (isError) {
         return <span>Error: {error?.message}</span>;
     }
 
     return (
-        <SimpleGrid minChildWidth="250px" spacing="4" p="8">
+        <ListLayout isLoaded={isLoading}>
             {data?.artist.map((art) => {
                 return <ArtistCard key={art.name} artist={art.name} />;
             })}
-        </SimpleGrid>
+        </ListLayout>
     );
 };
 

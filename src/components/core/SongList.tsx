@@ -1,8 +1,9 @@
-import { Flex } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 import { TopTrack } from "../../types";
+import ListLayout from "../utils/ListLayout";
 import ListLoader from "../utils/ListLoader";
 import SongCard from "../utils/SongCard";
 
@@ -28,23 +29,12 @@ const SongList = (props: Props) => {
         getTopTracks
     );
 
-    if (isLoading) {
-        return <ListLoader />;
-    }
-
     if (isError) {
         return <span>Error: {error?.message}</span>;
     }
 
     return (
-        <Flex
-            flexWrap="wrap"
-            justifyContent="space-around"
-            alignItems="flex-start"
-            p="12"
-            bg="gray.50"
-            minH="100vh"
-        >
+        <ListLayout isLoaded={isLoading}>
             {data?.track.map((d) => {
                 return (
                     <SongCard
@@ -54,7 +44,7 @@ const SongList = (props: Props) => {
                     />
                 );
             })}
-        </Flex>
+        </ListLayout>
     );
 };
 
