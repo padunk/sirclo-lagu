@@ -11,7 +11,7 @@ const MainHeader = (props: Props) => {
             h="16"
             px="4"
             py="8"
-            bg="orange.300"
+            bgGradient="linear(to-br, purple.300, pink.500)"
             justify="space-between"
             alignItems="center"
             shadow="md"
