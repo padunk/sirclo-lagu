@@ -5,14 +5,24 @@ export function timeFormatter(time: number): string {
     return `${mins}:${String(secs).padStart(2, "0")}`;
 }
 
-export function numberFormatter(n: number): string {
-    let result: string;
-    if (n > 999_999) {
-        result = (n / 1_000_000).toFixed(2) + "M";
-    } else if (n > 999) {
-        result = (n / 1_000).toFixed(2) + "K";
+export function numberFormatter(n: number | string | undefined): {
+    formattedNumber: string;
+    satuan: string;
+} {
+    let result = { formattedNumber: "", satuan: "" };
+    if (n === undefined) {
+        return result;
+    }
+    // change n type to number
+    let num = Number(n);
+    if (num > 999_999) {
+        result.formattedNumber = (num / 1_000_000).toFixed(2);
+        result.satuan = "M";
+    } else if (num > 999) {
+        result.formattedNumber = (num / 1_000).toFixed(2);
+        result.satuan = "K";
     } else {
-        result = String(n);
+        result.formattedNumber = String(num);
     }
 
     return result;
