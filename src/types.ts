@@ -10,7 +10,7 @@ export type Tag = {
     url: string;
 };
 
-type Attributes = {
+export type Attributes = {
     page: string;
     perPage: string;
     totalPages: string;
@@ -49,7 +49,7 @@ type TrackAlbum = {
     url: string;
 };
 
-type TrackMatch = {
+export type TrackMatch = {
     artist: string;
     image: Image[];
     listeners: string;
@@ -103,7 +103,7 @@ export type ArtistSimilar = {
     url: string;
 };
 
-interface ArtistMatch extends ArtistBase {
+export interface ArtistMatch extends ArtistBase {
     image: Image[];
     listeners: string;
     streamable: string;
@@ -136,29 +136,37 @@ export interface ArtistInfo extends ArtistBase {
 }
 
 // Search
-export type SearchBase = {
+export interface SearchAttributes {
+    "opensearch:itemsPerPage": string;
+    "opensearch:startIndex": string;
+    "opensearch:totalResults": string;
     "opensearch:Query": {
         "#text": string;
         role: string;
         searchTerms?: string;
         startPage: string;
     };
-    "opensearch:totalResults": string;
-    "opensearch:startIndex": string;
-    "opensearch:itemsPerPage": string;
-    artistmatches?: {
-        artist: ArtistMatch[];
-    };
+}
+
+export interface SearchBase extends SearchAttributes {
     "@attr": {
         for?: string;
+    };
+    artistmatches?: {
+        artist: ArtistMatch[];
     };
     trackmatches?: {
         track: TrackMatch[];
     };
-};
+}
 
 // states
 export enum ShowBy {
     Artist = "topArtist",
     Track = "topTrack",
+}
+
+export enum Method {
+    artist = "artist.search",
+    track = "track.search",
 }
