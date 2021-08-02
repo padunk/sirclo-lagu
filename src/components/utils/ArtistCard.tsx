@@ -4,22 +4,21 @@ import {
     Flex,
     Heading,
     Image,
-    LinkBox,
     LinkOverlay,
-    Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 import { ArtistInfo } from "../../types";
 import SimilarArtist from "./SimilarArtist";
-import DoorDashFavorite from "./SongCardLoader";
 import Stats from "./Stats";
 import Tags from "./Tags";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import { useState } from "react";
 import { customAvatarTemplate, isTemplateImage } from "../../helpers/utils";
 import CardLayout from "./CardLayout";
+import CardLoader from "./CardLoader";
+import ErrorCard from "./ErrorCard";
 
 interface Props {
     artist: string;
@@ -42,13 +41,21 @@ const ArtistCard = ({ artist }: Props) => {
         return result.data.artist;
     };
 
-    const { isIdle, data } = useQuery<ArtistInfo, Error>(
+    const { isError, isLoading, data, error } = useQuery<ArtistInfo, Error>(
         ["artistInfo", artist],
         getArtistInfo
     );
 
-    if (isIdle) {
-        return <DoorDashFavorite />;
+    if (isError) {
+        return <ErrorCard message={error?.message!} />;
+    }
+
+    if (isLoading) {
+        return (
+            <CardLayout>
+                <CardLoader />
+            </CardLayout>
+        );
     }
 
     return (

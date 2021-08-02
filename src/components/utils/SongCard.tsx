@@ -1,20 +1,14 @@
-import {
-    Box,
-    Flex,
-    Heading,
-    Image,
-    LinkBox,
-    LinkOverlay,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, LinkOverlay } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 import { TrackInfo } from "../../types";
-import DoorDashFavorite from "./SongCardLoader";
 import Stats from "./Stats";
 import Tags from "./Tags";
 import { customCoverTemplate, isTemplateImage } from "../../helpers/utils";
 import CardLayout from "./CardLayout";
+import ErrorCard from "./ErrorCard";
+import CardLoader from "./CardLoader";
 
 interface Props {
     artist: string;
@@ -33,42 +27,49 @@ const SongCard = ({ artist, title }: Props) => {
                 )}&format=json`
             );
         } catch (error) {
-            throw new Error("problem getting track info");
+            throw new Error("Track info is not available");
         }
         return result.data.track;
     };
 
-    const { isIdle, data } = useQuery<TrackInfo, Error>(
+    const { isError, isLoading, data, error } = useQuery<TrackInfo, Error>(
         ["trackInfo", artist, title],
         getTrackInfo
     );
 
-    if (isIdle) {
-        return <DoorDashFavorite />;
+    if (isError) {
+        return <ErrorCard message={error?.message!} />;
+    }
+
+    if (isLoading) {
+        return (
+            <CardLayout>
+                <CardLoader />;
+            </CardLayout>
+        );
     }
 
     return (
         <CardLayout>
-            {/* {JSON.stringify(data, null, 2)} */}
-            {data?.album ? (
-                <Image
-                    src={
-                        isTemplateImage(data?.album?.image[2]["#text"])
-                            ? customCoverTemplate
-                            : data?.album?.image[2]["#text"]
-                    }
-                    alt={data?.name}
-                />
-            ) : (
-                <Box d="flex" justifyContent="center" alignItems="center">
+            <Box display="flex" justifyContent="center" alignItems="center">
+                {data?.album ? (
+                    <Image
+                        src={
+                            isTemplateImage(data?.album?.image[2]["#text"])
+                                ? customCoverTemplate
+                                : data?.album?.image[2]["#text"]
+                        }
+                        alt={data?.name}
+                    />
+                ) : (
                     <Image
                         src={customCoverTemplate}
                         alt={data?.name}
                         w="174px"
                         h="174px"
                     />
-                </Box>
-            )}
+                )}
+            </Box>
             <Flex direction="column" mt="4">
                 <Heading as="h3" fontSize="lg" mt="3" fontWeight="600">
                     <LinkOverlay href={data?.url}>{data?.name}</LinkOverlay>
