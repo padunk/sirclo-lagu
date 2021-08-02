@@ -39,6 +39,9 @@ const ListMenu = ({
             border="1px"
             borderColor="gray.100"
             bg="white"
+            top="0"
+            position="sticky"
+            zIndex="modal"
         >
             <Flex alignItems="center" flexBasis="350px">
                 <Text pr="4">Show by</Text>
