@@ -34,9 +34,8 @@ const Footer = (props: Props) => {
     ];
     return (
         <Flex
-            direction="column"
-            h="100px"
-            justifyContent="center"
+            h="70px"
+            justifyContent="space-around"
             alignItems="center"
             py="4"
             bgGradient="linear(to-tl, purple.700, pink.500)"
