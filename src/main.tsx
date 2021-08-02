@@ -1,21 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
-import { ChakraProvider } from "@chakra-ui/react";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
+
+// style
+import { ChakraProvider } from "@chakra-ui/react";
+import "./index.css";
 import "@fontsource/open-sans";
 import theme from "../theme";
 
-const queryClient = new QueryClient();
+// only on dev
+import { ReactQueryDevtools } from "react-query/devtools";
 
 ReactDOM.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={new QueryClient()}>
                 <App />
-                <ReactQueryDevtools initialIsOpen={false} />
+                {import.meta.env.DEV && (
+                    <ReactQueryDevtools initialIsOpen={false} />
+                )}
             </QueryClientProvider>
         </ChakraProvider>
     </React.StrictMode>,
