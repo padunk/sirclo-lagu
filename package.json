@@ -10,6 +10,7 @@
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@fontsource/nunito": "^4.5.0",
     "@fontsource/open-sans": "^4.5.0",
     "axios": "^0.21.1",
     "framer-motion": "^4",
