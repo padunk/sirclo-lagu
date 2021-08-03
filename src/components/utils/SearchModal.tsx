@@ -1,5 +1,7 @@
 import {
     Button,
+    FormControl,
+    FormLabel,
     Input,
     InputGroup,
     InputRightElement,
@@ -8,7 +10,7 @@ import {
     ModalContent,
     ModalOverlay,
 } from "@chakra-ui/react";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 import { ShowBy } from "../../types";
@@ -24,6 +26,15 @@ const SearchModal = ({ isOpen, onClose, setSearchTerms, setShowBy }: Props) => {
     // TODO: should be FocusableElement?
     const searchInputRef = useRef<any>();
 
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        // @ts-ignore
+        let value: string = e.target.elements["search-modal"].value;
+        setSearchTerms(value.trim().toLowerCase());
+        setShowBy(null);
+        onClose();
+    };
+
     return (
         <Modal
             isOpen={isOpen}
@@ -33,30 +44,31 @@ const SearchModal = ({ isOpen, onClose, setSearchTerms, setShowBy }: Props) => {
             <ModalOverlay />
             <ModalContent>
                 <ModalBody py="4">
-                    <InputGroup>
-                        <Input
-                            ref={searchInputRef}
-                            type="text"
-                            placeholder="Search artist or song name"
-                            fontSize="lg"
-                        />
-                        <InputRightElement
-                            children={
-                                <Button
-                                    onClick={() => {
-                                        setSearchTerms(
-                                            searchInputRef.current.value
-                                                .trim()
-                                                .toLowerCase()
-                                        );
-                                        setShowBy(null);
-                                        onClose();
-                                    }}
-                                    rightIcon={<BsSearch color="teal" />}
-                                ></Button>
-                            }
-                        />
-                    </InputGroup>
+                    <form onSubmit={handleSubmit}>
+                        <InputGroup>
+                            <FormLabel htmlFor="search-modal" hidden>
+                                Search
+                            </FormLabel>
+                            <Input
+                                id="search-modal"
+                                name="search-modal"
+                                ref={searchInputRef}
+                                type="search"
+                                placeholder="Search artist or song name"
+                                fontSize="lg"
+                                data-testid="search-modal"
+                            />
+                            <InputRightElement
+                                children={
+                                    <Button
+                                        type="submit"
+                                        rightIcon={<BsSearch color="teal" />}
+                                        data-testid="search-submit"
+                                    ></Button>
+                                }
+                            />
+                        </InputGroup>
+                    </form>
                 </ModalBody>
             </ModalContent>
         </Modal>
