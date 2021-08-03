@@ -9,8 +9,14 @@ import {
     Text,
     useDisclosure,
 } from "@chakra-ui/react";
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import React, {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useContext,
+} from "react";
 import { BsFillGrid3X3GapFill, BsListUl, BsSearch } from "react-icons/bs";
+import { ListLoading, LoadingContext } from "../../context/LoadingContext";
 import { ShowBy } from "../../types";
 import SearchModal from "../utils/SearchModal";
 
@@ -27,6 +33,8 @@ const ListMenu = ({
     setSearchTerms,
     setShowBy,
 }: Props) => {
+    const { isLoading } = useContext(LoadingContext) as ListLoading;
+    console.log("isLoading :>> ", isLoading);
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <Flex
@@ -54,13 +62,21 @@ const ListMenu = ({
                     onChange={onChange}
                     select-name="show-by"
                     title="show-by"
+                    disabled={isLoading}
+                    placeholder="Track or Artist"
                 >
                     <option value={ShowBy.Track}>Top Track</option>
                     <option value={ShowBy.Artist}>Top Artist</option>
                 </Select>
             </Flex>
 
-            <InputGroup mx="6" onClick={onOpen} cursor="pointer">
+            <InputGroup
+                mx="6"
+                onClick={onOpen}
+                cursor="pointer"
+                as="button"
+                disabled={isLoading}
+            >
                 <InputLeftElement
                     pointerEvents="none"
                     children={<BsSearch />}
