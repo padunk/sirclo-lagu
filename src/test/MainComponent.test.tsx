@@ -3,7 +3,7 @@ import { ThemeProvider } from "@chakra-ui/react";
 import { render, fireEvent, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-import { MainHeader, Footer, ListMenu } from "../components/index";
+import { MainHeader, Footer, ListMenu, SearchModal } from "../components/index";
 import theme from "../../theme";
 import { myLinks } from "../components/core/Footer";
 
@@ -64,7 +64,7 @@ test("should shows menu element", () => {
     expect(searchInput).toHaveValue("pink floyd");
 });
 
-test("should select show by on change is working", () => {
+test("should select show-by onChange is working", () => {
     const props = {
         onChange: jest.fn(),
         searchTerms: "pink floyd",
@@ -90,10 +90,6 @@ test("should input search working", async () => {
         setShowBy: jest.fn(),
     };
 
-    const defaultProps = {
-        onClick: jest.fn(),
-    };
-
     const { container } = render(
         <ThemeProvider theme={theme}>
             <ListMenu {...props} />
@@ -107,4 +103,20 @@ test("should input search working", async () => {
 
     expect(searchModal).toBeInTheDocument();
     expect(searchSubmitButton).toBeInTheDocument();
+});
+
+test("should shows modal, its children and close when submit", () => {
+    const props = {
+        isOpen: true,
+        onClose: jest.fn(),
+        setSearchTerms: jest.fn(),
+        setShowBy: jest.fn(),
+    };
+    const { queryByRole } = render(
+        <ThemeProvider theme={theme}>
+            <SearchModal {...props} />
+        </ThemeProvider>
+    );
+    fireEvent.click(queryByRole("button") as Element);
+    expect(props.onClose).toBeCalledTimes(1);
 });
