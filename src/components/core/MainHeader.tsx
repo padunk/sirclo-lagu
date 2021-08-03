@@ -1,6 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
-import Search from "../utils/Search";
 
 interface Props {}
 
@@ -16,10 +15,17 @@ const MainHeader = (props: Props) => {
             alignItems="center"
             shadow="md"
         >
-            <Heading as="h1">LAGU.FM</Heading>
-            <Box>
-                <Search />
-            </Box>
+            <Heading
+                as="h1"
+                bgGradient="linear(to-r, #5e00ff,#b80a42)"
+                _hover={{
+                    bgGradient: "linear(to-r, #04ab52, #5e00ff)",
+                }}
+                bgClip="text"
+                fontWeight="extrabold"
+            >
+                LAGU.FM
+            </Heading>
         </Flex>
     );
 };
