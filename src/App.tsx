@@ -3,14 +3,17 @@ import React, { useState } from "react";
 import { MainHeader } from "./components";
 import Footer from "./components/core/Footer";
 import MainDisplay from "./components/core/MainDisplay";
+import { listLoading, LoadingContext } from "./context/LoadingContext";
 
 function App() {
     return (
-        <Flex direction="column" bg="gray.50" minH="100vh">
-            <MainHeader />
-            <MainDisplay />
-            <Footer />
-        </Flex>
+        <LoadingContext.Provider value={listLoading()}>
+            <Flex direction="column" bg="gray.50" minH="100vh">
+                <MainHeader />
+                <MainDisplay />
+                <Footer />
+            </Flex>
+        </LoadingContext.Provider>
     );
 }
 

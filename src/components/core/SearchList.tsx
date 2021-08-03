@@ -13,6 +13,8 @@ const SearchList = ({ searchTerms }: Props) => {
             divider={<StackDivider borderColor="gray.200" />}
             spacing={4}
             align="stretch"
+            flexGrow={2}
+            mt="8"
         >
             <SearchResult searchTerms={searchTerms} method={Method.artist} />
             <SearchResult searchTerms={searchTerms} method={Method.track} />
