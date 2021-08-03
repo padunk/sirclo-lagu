@@ -1,6 +1,7 @@
 import {
     Box,
     Flex,
+    FormLabel,
     Input,
     InputGroup,
     InputLeftElement,
@@ -44,8 +45,16 @@ const ListMenu = ({
             zIndex="modal"
         >
             <Flex alignItems="center" flexBasis="350px">
-                <Text pr="4">Show by</Text>
-                <Select placeholder="Select option" w="40" onChange={onChange}>
+                <FormLabel pr="4" htmlFor="show-by">
+                    Show by
+                </FormLabel>
+                <Select
+                    id="show-by"
+                    w="40"
+                    onChange={onChange}
+                    select-name="show-by"
+                    title="show-by"
+                >
                     <option value={ShowBy.Track}>Top Track</option>
                     <option value={ShowBy.Artist}>Top Artist</option>
                 </Select>
@@ -56,8 +65,12 @@ const ListMenu = ({
                     pointerEvents="none"
                     children={<BsSearch />}
                 />
+                <FormLabel hidden htmlFor="search">
+                    Search
+                </FormLabel>
                 <Input
-                    type="text"
+                    id="search"
+                    type="search"
                     placeholder="Search artist or song name"
                     pointerEvents="none"
                     defaultValue={searchTerms}
@@ -72,10 +85,10 @@ const ListMenu = ({
                 setShowBy={setShowBy}
             />
 
-            <Flex alignItems="center">
+            {/* <Flex alignItems="center">
                 <BsFillGrid3X3GapFill />
                 <BsListUl />
-            </Flex>
+            </Flex> */}
         </Flex>
     );
 };
