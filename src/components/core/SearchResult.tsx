@@ -1,6 +1,6 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import {
     ArtistMatch,
@@ -15,6 +15,8 @@ import SongCard from "../utils/SongCard";
 import PaginationBar from "../utils/PaginationBar";
 import NoResult from "../utils/NoResult";
 import ListLoader from "../utils/ListLoader";
+import { ListLoading, LoadingContext } from "../../context/LoadingContext";
+import ErrorList from "../utils/ErrorList";
 
 interface Props {
     searchTerms: string;
@@ -22,6 +24,7 @@ interface Props {
 }
 
 const SearchResult = ({ method, searchTerms }: Props) => {
+    const { setIsLoading } = useContext(LoadingContext) as ListLoading;
     const [pagination, setPagination] = useState<Attributes>({
         page: "1", // page number can not exceed 1_000_000
         perPage: "",
@@ -35,6 +38,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
                 results?: SearchBase;
             };
         };
+        setIsLoading(true);
         try {
             result = await axios.get(
                 `http://ws.audioscrobbler.com/2.0/?method=${method}&artist=${encodeURI(
@@ -78,12 +82,26 @@ const SearchResult = ({ method, searchTerms }: Props) => {
         { keepPreviousData: true }
     );
 
+    if (query.isLoading) {
+        setIsLoading(true);
+        return <ListLoader />;
+    }
+
+    if (query.isError) {
+        setIsLoading(false);
+    }
+
+    if (query.isSuccess) {
+        setIsLoading(false);
+    }
+
     return (
-        <Box>
+        <Flex flexDirection="column" flexGrow={1}>
             <Heading as="h2" pl={8} fontSize="2xl">
                 {method === Method.track ? "Track" : "Artist"}
             </Heading>
             {query.isError ? (
+                // @ts-ignore
                 <NoResult message={query.error.message} />
             ) : query.isLoading ? (
                 <ListLayout>
@@ -115,7 +133,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
                     />
                 </ListLayout>
             )}
-        </Box>
+        </Flex>
     );
 };
 
