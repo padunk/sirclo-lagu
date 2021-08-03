@@ -71,7 +71,12 @@ const ArtistCard = ({ artist }: Props) => {
             </Box>
             <Flex direction="column" mt="4">
                 <LinkOverlay href={data?.url}>
-                    <Heading as="h2" fontSize="xl" fontWeight="600">
+                    <Heading
+                        as="h2"
+                        fontSize="xl"
+                        fontWeight="600"
+                        data-testid="artist-name"
+                    >
                         {data?.name}
                     </Heading>
                 </LinkOverlay>

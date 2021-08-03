@@ -20,6 +20,7 @@ const CardLayout = (props: Props) => {
             h="full"
             bg="white"
             m="auto"
+            data-testid="card-layout"
         >
             {props.children}
         </LinkBox>

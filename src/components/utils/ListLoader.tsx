@@ -22,6 +22,7 @@ const ListLoader = (props: Props) => (
                     w="full"
                     h="full"
                     bg="white"
+                    data-testid="list-loader"
                 >
                     <CardLoader />
                 </Flex>
