@@ -1,12 +1,13 @@
-import { Flex, Skeleton } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import { range } from "../../helpers/utils";
 import CardLoader from "./CardLoader";
+import ListLayout from "./ListLayout";
 
 interface Props {}
 
 const ListLoader = (props: Props) => (
-    <>
+    <ListLayout>
         {range(0, 7, 1).map((_, i) => {
             return (
                 <Flex
@@ -26,7 +27,7 @@ const ListLoader = (props: Props) => (
                 </Flex>
             );
         })}
-    </>
+    </ListLayout>
 );
 
 export default ListLoader;
