@@ -8,7 +8,7 @@ interface Props {
 
 const Tags = ({ tag }: Props) => {
     if (tag === undefined) {
-        return "";
+        return <Box d="flex" flexWrap="wrap" w="full" mt="2"></Box>;
     }
     // if only one tag
     if (!Array.isArray(tag) && typeof tag === "object") {
@@ -22,6 +22,7 @@ const Tags = ({ tag }: Props) => {
             </Box>
         );
     }
+    // we can ssume there is more than one tag
     return (
         <Box d="flex" flexWrap="wrap" w="full" mt="2">
             {tag?.map((t) => {
