@@ -9,29 +9,30 @@ import {
 
 interface Props {}
 
+export const myLinks = [
+    {
+        icon: <RiGithubFill />,
+        name: "github",
+        url: "https://github.com/padunk",
+    },
+    {
+        icon: <RiCodepenFill />,
+        name: "codepen",
+        url: "https://codepen.io/padunk",
+    },
+    {
+        icon: <RiLinkedinFill />,
+        name: "linkedin",
+        url: "https://linkedin.com/in/anakagung",
+    },
+    {
+        icon: <RiTwitterFill />,
+        name: "twitter",
+        url: "https://twitter.com/anakagungcorp",
+    },
+];
+
 const Footer = (props: Props) => {
-    const myLinks = [
-        {
-            icon: <RiGithubFill />,
-            name: "github",
-            url: "https://github.com/padunk",
-        },
-        {
-            icon: <RiCodepenFill />,
-            name: "codepen",
-            url: "https://codepen.io/padunk",
-        },
-        {
-            icon: <RiLinkedinFill />,
-            name: "linkedin",
-            url: "https://linkedin.com/in/anakagung",
-        },
-        {
-            icon: <RiTwitterFill />,
-            name: "twitter",
-            url: "https://twitter.com/anakagungcorp",
-        },
-    ];
     return (
         <Flex
             h="70px"
@@ -55,6 +56,7 @@ const Footer = (props: Props) => {
                             fontSize="32px"
                             color={`${link.name}.400`}
                             pr="2"
+                            data-testid={link.name}
                         >
                             {link.icon}
                         </Link>
