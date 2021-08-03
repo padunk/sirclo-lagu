@@ -21,7 +21,7 @@ Run the dev server at `localhost:3000`
 yarn dev
 ```
 
-Run test with Testing Library and Jest
+**Open new terminal** to run test with Testing Library and Jest
 
 ```bash
 yarn test
