@@ -3,7 +3,7 @@ const styles = {
         a: {
             _hover: {
                 textDecoration: "none",
-                color: "yellow.300",
+                color: "#D34695",
             },
         },
     },

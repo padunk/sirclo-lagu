@@ -6,7 +6,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 // style
 import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
-import "@fontsource/open-sans";
+import "@fontsource/open-sans/400.css";
+import "@fontsource/nunito/400.css";
 import theme from "../theme";
 
 // only on dev
