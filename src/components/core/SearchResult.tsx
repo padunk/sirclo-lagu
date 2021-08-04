@@ -32,7 +32,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
         totalPages: "",
     });
 
-    const getResult = async (page = 1, limit = 24) => {
+    const getResult = async (_searchTerms: string, page = 1, limit = 24) => {
         let result: {
             data: {
                 results?: SearchBase;
@@ -43,12 +43,14 @@ const SearchResult = ({ method, searchTerms }: Props) => {
             result = await axios.get(
                 `http://ws.audioscrobbler.com/2.0/?method=${method}&${
                     method === Method.artist ? "artist" : "track"
-                }=${encodeURI(searchTerms)}&api_key=${
+                }=${encodeURI(_searchTerms)}&api_key=${
                     process.env.VITE_LAST_FM_API_KEY
                 }&format=json&page=${page}&limit=${limit}`
             );
         } catch (error) {
             throw new Error("problem getting search result");
+        } finally {
+            setIsLoading(false);
         }
 
         // check if there is data coming.
@@ -77,23 +79,10 @@ const SearchResult = ({ method, searchTerms }: Props) => {
     };
 
     const query = useQuery<TrackMatch[] | ArtistMatch[] | undefined, Error>(
-        [method, Number(pagination.page)],
-        () => getResult(Number(pagination.page)),
+        [method, searchTerms, Number(pagination.page)],
+        () => getResult(searchTerms, Number(pagination.page)),
         { keepPreviousData: true }
     );
-
-    if (query.isLoading) {
-        setIsLoading(true);
-        return <ListLoader />;
-    }
-
-    if (query.isError) {
-        setIsLoading(false);
-    }
-
-    if (query.isSuccess) {
-        setIsLoading(false);
-    }
 
     return (
         <Flex flexDirection="column" flexGrow={1}>
