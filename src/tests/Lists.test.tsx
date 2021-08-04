@@ -1,95 +1,63 @@
-import {
-    render,
-    fireEvent,
-    screen,
-    cleanup,
-    waitFor,
-} from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-
-// Chakra UI provider is needed here.
-import { ThemeProvider } from "@chakra-ui/react";
-import theme from "../../theme";
-import { ArtistList } from "../components";
+import * as React from "react";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { renderHook } from "@testing-library/react-hooks";
+import { render, fireEvent, screen, cleanup } from "@testing-library/react";
+import nock from "nock";
+import axios from "axios";
+import { mockTopArtistResult } from "./mockResult";
 
 afterEach(cleanup);
 
-test("should showing loading on first render", () => {
-    const { getByTestId } = render(
-        <ThemeProvider theme={theme}>
-            <ArtistList />
-        </ThemeProvider>
-    );
-    expect(getByTestId("list-loader")).toBeInTheDocument();
+// custom hooks
+function useGetTopArtist(page = 1, limit = 3) {
+    return useQuery("customHook", async () => {
+        try {
+            const { data } = await axios.get(
+                `http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json&limit=${limit}&page=${page}`
+            );
+            return data;
+        } catch (error) {
+            throw new Error("problem getting top artist");
+        }
+    });
+}
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
 });
 
-test("should display artist card on success", async () => {
-    const mockResult = {
-        name: "pink floyd",
-        mbid: "",
-        url: "",
-        bio: {
-            content: "",
-            links: {
-                link: {
-                    href: "",
-                    rel: "",
-                },
-            },
-            published: "",
-            summary: "",
-        },
-        image: [
-            { "#text": "", size: "" },
-            { "#text": "", size: "" },
-            { "#text": "", size: "" },
-        ],
-        ontour: 0,
-        similar: {
-            artist: [
-                {
-                    image: [
-                        { "#text": "", size: "" },
-                        { "#text": "", size: "" },
-                        { "#text": "", size: "" },
-                    ],
-                    name: "",
-                    url: "",
-                },
-            ],
-        },
-        stats: {
-            playcount: 888,
-            listeners: 666,
-        },
-        streamable: "",
-        tags: {
-            tag: [{ name: "", url: "" }],
-        },
-    };
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
-    // Mock API
-    jest.spyOn(global, "fetch")
-        // @ts-ignore
-        .mockImplementation(() =>
-            Promise.resolve({
-                status: 200,
-                json: () =>
-                    Promise.resolve({
-                        value: mockResult,
-                    }),
-            })
-        );
+// mock api success
+nock(`http://ws.audioscrobbler.com/2.0`)
+    .get(
+        `/?method=chart.gettopartists&api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json&limit=3&page=1`
+    )
+    .reply(200, { mockTopArtistResult });
+test("if success getting call gettopartist", async () => {
+    const { result, waitFor } = renderHook(() => useGetTopArtist(), {
+        wrapper,
+    });
+    await waitFor(() => result.current.isSuccess);
+    expect(result.current.data).toBe(mockTopArtistResult);
+});
 
-    const { getByTestId } = render(
-        <ThemeProvider theme={theme}>
-            <ArtistList />
-        </ThemeProvider>
-    );
-    await waitFor(() => getByTestId("card-layout"));
-    expect(getByTestId("artist-name")).toBe(mockResult.name);
-
-    // clear mock
-    // @ts-ignore
-    global.fetch.mockClear();
+// mock api error
+nock(`http://ws.audioscrobbler.com/2.0`)
+    .get(
+        `/?method=chart.gettopartists&api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json&limit=3&page=1`
+    )
+    .replyWithError("problem getting top artist");
+test("if error getting call gettopartist", async () => {
+    const { result, waitFor } = renderHook(() => useGetTopArtist(), {
+        wrapper,
+    });
+    await waitFor(() => result.current.isError);
+    expect(result.current.data).toBeUndefined();
 });
