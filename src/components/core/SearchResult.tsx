@@ -111,21 +111,21 @@ const SearchResult = ({ method, searchTerms }: Props) => {
                 <ListLayout>
                     {method === Method.track
                         ? // @ts-ignore
-                          query.data?.map((result: TrackMatch) => {
+                          query.data?.map((result: TrackMatch, i) => {
                               return (
                                   <SongCard
                                       artist={(result as TrackMatch).artist}
                                       title={result.name}
-                                      key={result.name}
+                                      key={result.name + i}
                                   />
                               );
                           })
                         : // @ts-ignore
-                          query.data?.map((result: ArtistMatch) => {
+                          query.data?.map((result: ArtistMatch, i) => {
                               return (
                                   <ArtistCard
                                       artist={result.name}
-                                      key={result.name}
+                                      key={result.name + i}
                                   />
                               );
                           })}
