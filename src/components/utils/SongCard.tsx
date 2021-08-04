@@ -21,7 +21,7 @@ const SongCard = ({ artist, title }: Props) => {
         try {
             result = await axios.get(
                 `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${
-                    import.meta.env.VITE_LAST_FM_API_KEY
+                    process.env.VITE_LAST_FM_API_KEY
                 }&artist=${encodeURI(artist)}&track=${encodeURI(
                     title
                 )}&format=json`

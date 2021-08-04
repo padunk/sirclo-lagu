@@ -33,7 +33,7 @@ const ArtistCard = ({ artist }: Props) => {
             result = await axios.get(
                 `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURI(
                     artist
-                )}&api_key=${import.meta.env.VITE_LAST_FM_API_KEY}&format=json`
+                )}&api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json`
             );
         } catch (error) {
             throw new Error("problem getting artist info");

@@ -44,7 +44,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
                 `http://ws.audioscrobbler.com/2.0/?method=${method}&artist=${encodeURI(
                     searchTerms
                 )}&api_key=${
-                    import.meta.env.VITE_LAST_FM_API_KEY
+                    process.env.VITE_LAST_FM_API_KEY
                 }&format=json&page=${page}&limit=${limit}`
             );
         } catch (error) {

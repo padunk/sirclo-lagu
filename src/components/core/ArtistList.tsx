@@ -29,9 +29,7 @@ const ArtistList = (props: Props) => {
         };
         try {
             result = await axios.get(
-                `http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${
-                    import.meta.env.VITE_LAST_FM_API_KEY
-                }&format=json&limit=${limit}&page=${page}`
+                `http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json&limit=${limit}&page=${page}`
             );
         } catch (error) {
             throw new Error("problem getting top artists");
