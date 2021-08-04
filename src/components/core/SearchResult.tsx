@@ -41,9 +41,9 @@ const SearchResult = ({ method, searchTerms }: Props) => {
         setIsLoading(true);
         try {
             result = await axios.get(
-                `http://ws.audioscrobbler.com/2.0/?method=${method}&artist=${encodeURI(
-                    searchTerms
-                )}&api_key=${
+                `http://ws.audioscrobbler.com/2.0/?method=${method}&${
+                    method === Method.artist ? "artist" : "track"
+                }=${encodeURI(searchTerms)}&api_key=${
                     process.env.VITE_LAST_FM_API_KEY
                 }&format=json&page=${page}&limit=${limit}`
             );
