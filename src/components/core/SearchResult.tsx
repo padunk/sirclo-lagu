@@ -110,7 +110,8 @@ const SearchResult = ({ method, searchTerms }: Props) => {
             ) : (
                 <ListLayout>
                     {method === Method.track
-                        ? query.data?.map((result) => {
+                        ? // @ts-ignore
+                          query.data?.map((result: TrackMatch) => {
                               return (
                                   <SongCard
                                       artist={(result as TrackMatch).artist}
@@ -119,7 +120,8 @@ const SearchResult = ({ method, searchTerms }: Props) => {
                                   />
                               );
                           })
-                        : query.data?.map((result) => {
+                        : // @ts-ignore
+                          query.data?.map((result: ArtistMatch) => {
                               return (
                                   <ArtistCard
                                       artist={result.name}
