@@ -7,4 +7,6 @@ export function listLoading() {
     return { isLoading, setIsLoading };
 }
 
-export const LoadingContext = React.createContext<ListLoading | null>(null);
+export const LoadingContext = React.createContext<ListLoading>(
+    {} as ListLoading
+);
