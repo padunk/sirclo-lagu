@@ -59,7 +59,7 @@ export type TrackMatch = {
     url: string;
 };
 
-interface Track extends TrackBase {
+export interface Track extends TrackBase {
     artist: ArtistBase;
     image: Image[];
     streamable: TrackStreamable;
@@ -109,7 +109,7 @@ export interface ArtistMatch extends ArtistBase {
     streamable: string;
 }
 
-interface Artist extends ArtistMatch {
+export interface Artist extends ArtistMatch {
     playcount: string;
 }
 
