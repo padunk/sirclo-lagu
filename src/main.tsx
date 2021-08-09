@@ -32,7 +32,7 @@ ReactDOM.render(
         <ChakraProvider theme={theme}>
             <QueryClientProvider client={queryClient}>
                 <App />
-                {import.meta.env.DEV && (
+                {process.env.DEV && (
                     <ReactQueryDevtools initialIsOpen={false} />
                 )}
             </QueryClientProvider>
