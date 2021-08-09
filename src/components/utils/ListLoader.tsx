@@ -1,13 +1,12 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, SimpleGrid } from "@chakra-ui/react";
 import React from "react";
 import { range } from "../../helpers/utils";
 import CardLoader from "./CardLoader";
-import ListLayout from "./ListLayout";
 
 interface Props {}
 
 const ListLoader = (props: Props) => (
-    <ListLayout>
+    <SimpleGrid minChildWidth="250px" spacing="10" p="8" w="full">
         {range(0, 7, 1).map((_, i) => {
             return (
                 <Flex
@@ -28,7 +27,7 @@ const ListLoader = (props: Props) => (
                 </Flex>
             );
         })}
-    </ListLayout>
+    </SimpleGrid>
 );
 
 export default ListLoader;
