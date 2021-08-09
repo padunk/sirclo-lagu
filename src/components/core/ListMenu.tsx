@@ -9,32 +9,26 @@ import {
     Text,
     useDisclosure,
 } from "@chakra-ui/react";
-import React, {
-    ChangeEvent,
-    Dispatch,
-    SetStateAction,
-    useContext,
-} from "react";
+import React, { Dispatch, useContext } from "react";
+import { useEffect } from "react";
 import { BsFillGrid3X3GapFill, BsListUl, BsSearch } from "react-icons/bs";
-import { ListLoading, LoadingContext } from "../../context/LoadingContext";
-import { ShowBy } from "../../types";
+import { QueryObserver, useQueryClient } from "react-query";
+import {
+    FetchStatusContext,
+    FetchStatusValue,
+} from "../../context/LoadingContext";
+import { QueryMethod } from "../../types";
 import SearchModal from "../utils/SearchModal";
 
 interface Props {
-    onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-    searchTerms: string;
-    setSearchTerms: Dispatch<SetStateAction<string>>;
-    setShowBy: Dispatch<React.SetStateAction<ShowBy | null>>;
+    listBy: string;
+    setListBy: Dispatch<React.SetStateAction<string>>;
 }
 
-const ListMenu = ({
-    onChange,
-    searchTerms,
-    setSearchTerms,
-    setShowBy,
-}: Props) => {
-    const { isLoading } = useContext(LoadingContext) as ListLoading;
-    console.log("isLoading :>> ", isLoading);
+const ListMenu = ({ listBy, setListBy }: Props) => {
+    const { globalStatus } = useContext<FetchStatusValue>(FetchStatusContext);
+    const isDisabled = !globalStatus.every((stat) => stat === "success");
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <Flex
@@ -59,14 +53,20 @@ const ListMenu = ({
                 <Select
                     id="show-by"
                     w="40"
-                    onChange={onChange}
+                    onChange={(e) => setListBy(e.target.value)}
                     select-name="show-by"
                     title="show-by"
-                    disabled={isLoading}
                     placeholder="Track or Artist"
+                    disabled={isDisabled}
+                    defaultValue={
+                        listBy !== QueryMethod.byArtist &&
+                        listBy !== QueryMethod.byTrack
+                            ? undefined
+                            : listBy
+                    }
                 >
-                    <option value={ShowBy.Track}>Top Track</option>
-                    <option value={ShowBy.Artist}>Top Artist</option>
+                    <option value={QueryMethod.byArtist}>Top Artist</option>
+                    <option value={QueryMethod.byTrack}>Top Track</option>
                 </Select>
             </Flex>
 
@@ -75,7 +75,7 @@ const ListMenu = ({
                 onClick={onOpen}
                 cursor="pointer"
                 as="button"
-                disabled={isLoading}
+                disabled={isDisabled}
             >
                 <InputLeftElement
                     pointerEvents="none"
@@ -89,7 +89,12 @@ const ListMenu = ({
                     type="search"
                     placeholder="Search artist or song name"
                     pointerEvents="none"
-                    defaultValue={searchTerms}
+                    defaultValue={
+                        listBy === QueryMethod.byArtist ||
+                        listBy === QueryMethod.byTrack
+                            ? ""
+                            : listBy
+                    }
                     readOnly
                 />
             </InputGroup>
@@ -97,8 +102,7 @@ const ListMenu = ({
             <SearchModal
                 isOpen={isOpen}
                 onClose={onClose}
-                setSearchTerms={setSearchTerms}
-                setShowBy={setShowBy}
+                setListBy={setListBy}
             />
 
             {/* <Flex alignItems="center">
