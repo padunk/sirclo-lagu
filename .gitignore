@@ -4,4 +4,4 @@ dist
 dist-ssr
 *.local
 *.txt
-*.copy.tsx
+copy
