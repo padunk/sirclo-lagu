@@ -13,16 +13,14 @@ import {
 import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
-import { ShowBy } from "../../types";
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    setSearchTerms: Dispatch<SetStateAction<string>>;
-    setShowBy: Dispatch<React.SetStateAction<ShowBy | null>>;
+    setListBy: Dispatch<SetStateAction<string>>;
 }
 
-const SearchModal = ({ isOpen, onClose, setSearchTerms, setShowBy }: Props) => {
+const SearchModal = ({ isOpen, onClose, setListBy }: Props) => {
     // TODO: should be FocusableElement?
     const searchInputRef = useRef<any>();
 
@@ -30,8 +28,7 @@ const SearchModal = ({ isOpen, onClose, setSearchTerms, setShowBy }: Props) => {
         e.preventDefault();
         // @ts-ignore
         let value: string = e.target.elements["search-modal"].value;
-        setSearchTerms(value.trim().toLowerCase());
-        setShowBy(null);
+        setListBy(value.trim().toLowerCase());
         onClose();
     };
 

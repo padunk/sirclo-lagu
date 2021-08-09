@@ -1,40 +1,27 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { ShowBy } from "../../types";
+import { Flex } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { FetchStatusProvider } from "../../context/LoadingContext";
+import { QueryMethod } from "../../types";
+import ListErrorBoundary from "../utils/ListErrorBoundary";
+import List from "./List";
 import ListMenu from "./ListMenu";
-import ArtistList from "./ArtistList";
-import SongList from "./SongList";
-import SearchList from "./SearchList";
-import SearchTemplate from "../utils/SearchTemplate";
 
 interface Props {}
 
 const MainDisplay = (props: Props) => {
-    const [showBy, setShowBy] = useState<ShowBy | null>(ShowBy.Artist);
-    const [searchTerms, setSearchTerms] = useState("");
-
-    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        setShowBy(e.target.value as ShowBy);
-    };
+    const [listBy, setListBy] = useState<QueryMethod | string>(
+        QueryMethod.byArtist
+    );
 
     return (
-        <Flex direction="column" flexGrow={2}>
-            <ListMenu
-                onChange={handleChange}
-                searchTerms={searchTerms}
-                setSearchTerms={setSearchTerms}
-                setShowBy={setShowBy}
-            />
-            {showBy === ShowBy.Artist ? (
-                <ArtistList />
-            ) : showBy === ShowBy.Track ? (
-                <SongList />
-            ) : searchTerms === "" ? (
-                <SearchTemplate />
-            ) : (
-                <SearchList searchTerms={searchTerms} />
-            )}
-        </Flex>
+        <FetchStatusProvider>
+            <Flex direction="column" flexGrow={2}>
+                <ListMenu listBy={listBy} setListBy={setListBy} />
+                <ListErrorBoundary>
+                    <List listBy={listBy} />
+                </ListErrorBoundary>
+            </Flex>
+        </FetchStatusProvider>
     );
 };
 
