@@ -34,17 +34,43 @@ const SongCard = ({ artist, title }: Props) => {
 
     const { isError, isLoading, data, error } = useQuery<TrackInfo, Error>(
         ["trackInfo", artist, title],
-        getTrackInfo
+        getTrackInfo,
+        { useErrorBoundary: true }
     );
-
-    if (isError) {
-        return <ErrorCard message={error?.message!} />;
-    }
 
     if (isLoading) {
         return (
             <CardLayout>
                 <CardLoader />;
+            </CardLayout>
+        );
+    }
+
+    if (data === undefined) {
+        return (
+            <CardLayout>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                    <Image
+                        src={customCoverTemplate}
+                        alt={artist}
+                        w="174px"
+                        h="174px"
+                    />
+                </Box>
+                <Flex direction="column" mt="4">
+                    <Heading as="h3" fontSize="lg" mt="3" fontWeight="600">
+                        {title}
+                    </Heading>
+                    <Heading
+                        as="h2"
+                        fontSize="lg"
+                        color="gray.700"
+                        fontWeight="light"
+                        mt="1"
+                    >
+                        <Box>{artist}</Box>
+                    </Heading>
+                </Flex>
             </CardLayout>
         );
     }

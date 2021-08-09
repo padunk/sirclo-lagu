@@ -43,12 +43,11 @@ const ArtistCard = ({ artist }: Props) => {
 
     const { isError, isLoading, data, error } = useQuery<ArtistInfo, Error>(
         ["artistInfo", artist],
-        getArtistInfo
+        getArtistInfo,
+        { useErrorBoundary: true }
     );
 
-    if (isError) {
-        return <ErrorCard message={error?.message!} />;
-    }
+    console.log("isError :>> ", isError, data);
 
     if (isLoading) {
         return (
@@ -58,16 +57,40 @@ const ArtistCard = ({ artist }: Props) => {
         );
     }
 
+    if (data === undefined) {
+        return (
+            <CardLayout>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                    <Image src={customAvatarTemplate} />
+                </Box>
+                <Flex direction="column" mt="4">
+                    <Heading
+                        as="h2"
+                        fontSize="xl"
+                        fontWeight="600"
+                        data-testid="artist-name"
+                    >
+                        {artist}
+                    </Heading>
+                </Flex>
+            </CardLayout>
+        );
+    }
+
     return (
         <CardLayout>
             <Box display="flex" justifyContent="center" alignItems="center">
-                <Image
-                    src={
-                        isTemplateImage(data?.image[2]["#text"])
-                            ? customAvatarTemplate
-                            : data?.image[2]["#text"]
-                    }
-                />
+                {data.image[2]["#text"] === "" ? (
+                    <Image src={customAvatarTemplate} />
+                ) : (
+                    <Image
+                        src={
+                            isTemplateImage(data?.image[2]["#text"])
+                                ? customAvatarTemplate
+                                : data?.image[2]["#text"]
+                        }
+                    />
+                )}
             </Box>
             <Flex direction="column" mt="4">
                 <LinkOverlay href={data?.url}>
