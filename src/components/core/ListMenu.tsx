@@ -58,10 +58,10 @@ const ListMenu = ({ listBy, setListBy }: Props) => {
                     title="show-by"
                     placeholder="Track or Artist"
                     disabled={isDisabled}
-                    defaultValue={
+                    value={
                         listBy !== QueryMethod.byArtist &&
                         listBy !== QueryMethod.byTrack
-                            ? undefined
+                            ? ""
                             : listBy
                     }
                 >
