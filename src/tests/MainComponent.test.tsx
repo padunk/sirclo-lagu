@@ -40,9 +40,8 @@ test("should shows footer element", () => {
 test("should shows menu element", () => {
     const props = {
         onChange: jest.fn(),
-        searchTerms: "pink floyd",
-        setSearchTerms: jest.fn(),
-        setShowBy: jest.fn(),
+        listBy: "",
+        setListBy: jest.fn(),
     };
 
     const { container } = render(
@@ -67,9 +66,8 @@ test("should shows menu element", () => {
 test("should select show-by onChange is working", () => {
     const props = {
         onChange: jest.fn(),
-        searchTerms: "pink floyd",
-        setSearchTerms: jest.fn(),
-        setShowBy: jest.fn(),
+        listBy: "",
+        setListBy: jest.fn(),
     };
 
     const { container } = render(
@@ -79,15 +77,14 @@ test("should select show-by onChange is working", () => {
     );
     fireEvent.change(container.querySelector("select") as Element);
     expect(props.onChange).toHaveBeenCalled();
-    expect(props.setSearchTerms).not.toHaveBeenCalled();
+    expect(props.setListBy).toHaveBeenCalled();
 });
 
 test("should input search working", async () => {
     const props = {
         onChange: jest.fn(),
-        searchTerms: "pink floyd",
-        setSearchTerms: jest.fn(),
-        setShowBy: jest.fn(),
+        listBy: "",
+        setListBy: jest.fn(),
     };
 
     const { container } = render(
@@ -109,8 +106,7 @@ test("should shows modal, its children and close when submit", () => {
     const props = {
         isOpen: true,
         onClose: jest.fn(),
-        setSearchTerms: jest.fn(),
-        setShowBy: jest.fn(),
+        setListBy: jest.fn(),
     };
     const { queryByRole } = render(
         <ThemeProvider theme={theme}>
