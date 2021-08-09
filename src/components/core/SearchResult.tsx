@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import {
     ArtistMatch,
     Attributes,
-    Method,
+    QueryMethod,
     SearchBase,
     TrackMatch,
 } from "../../types";
@@ -20,7 +20,7 @@ import ErrorList from "../utils/ErrorList";
 
 interface Props {
     searchTerms: string;
-    method: Method;
+    method: QueryMethod;
 }
 
 const SearchResult = ({ method, searchTerms }: Props) => {
@@ -42,7 +42,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
         try {
             result = await axios.get(
                 `http://ws.audioscrobbler.com/2.0/?method=${method}&${
-                    method === Method.artist ? "artist" : "track"
+                    method === QueryMethod.searchArtist ? "artist" : "track"
                 }=${encodeURI(_searchTerms)}&api_key=${
                     process.env.VITE_LAST_FM_API_KEY
                 }&format=json&page=${page}&limit=${limit}`
@@ -71,7 +71,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
             });
         }
 
-        if (method === Method.track) {
+        if (method === QueryMethod.searchTrack) {
             return result.data.results?.trackmatches?.track;
         } else {
             return result.data.results?.artistmatches?.artist;
@@ -87,7 +87,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
     return (
         <Flex flexDirection="column" flexGrow={1}>
             <Heading as="h2" pl={8} fontSize="2xl">
-                {method === Method.track ? "Track" : "Artist"}
+                {method === QueryMethod.searchTrack ? "Track" : "Artist"}
             </Heading>
             {query.isError ? (
                 // @ts-ignore
@@ -98,7 +98,7 @@ const SearchResult = ({ method, searchTerms }: Props) => {
                 </ListLayout>
             ) : (
                 <ListLayout>
-                    {method === Method.track
+                    {method === QueryMethod.searchTrack
                         ? // @ts-ignore
                           query.data?.map((result: TrackMatch, i) => {
                               return (

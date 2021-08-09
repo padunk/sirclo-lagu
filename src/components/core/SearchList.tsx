@@ -1,6 +1,6 @@
 import { StackDivider, VStack } from "@chakra-ui/react";
 import React from "react";
-import { Method } from "../../types";
+import { QueryMethod } from "../../types";
 import SearchResult from "./SearchResult";
 
 interface Props {
@@ -16,8 +16,14 @@ const SearchList = ({ searchTerms }: Props) => {
             flexGrow={2}
             mt="8"
         >
-            <SearchResult searchTerms={searchTerms} method={Method.artist} />
-            <SearchResult searchTerms={searchTerms} method={Method.track} />
+            <SearchResult
+                searchTerms={searchTerms}
+                method={QueryMethod.searchArtist}
+            />
+            <SearchResult
+                searchTerms={searchTerms}
+                method={QueryMethod.searchTrack}
+            />
         </VStack>
     );
 };
