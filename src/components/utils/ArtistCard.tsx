@@ -47,8 +47,6 @@ const ArtistCard = ({ artist }: Props) => {
         { useErrorBoundary: true }
     );
 
-    console.log("isError :>> ", isError, data);
-
     if (isLoading) {
         return (
             <CardLayout>
