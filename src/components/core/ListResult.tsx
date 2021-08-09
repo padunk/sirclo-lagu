@@ -32,13 +32,19 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
         return <ListLoader />;
     }
 
-    if (status === "error" || !data) {
+    if (status === "error") {
         return <ErrorList message={error?.message} />;
     }
 
     if (data?.hasOwnProperty("artists")) {
         return (
-            <ListLayout>
+            <ListLayout
+                isPreviousData={isPreviousData}
+                pagination={pagination}
+                setPagination={setPagination}
+                status={status}
+                title="Artist"
+            >
                 {data.artists!.artist.map((art) => {
                     return (
                         <ArtistCard
@@ -47,17 +53,17 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                         />
                     );
                 })}
-                <PaginationBar
-                    isPreviousData={isPreviousData}
-                    pagination={pagination}
-                    setPagination={setPagination}
-                    status={status}
-                />
             </ListLayout>
         );
     } else if (data?.hasOwnProperty("tracks")) {
         return (
-            <ListLayout>
+            <ListLayout
+                isPreviousData={isPreviousData}
+                pagination={pagination}
+                setPagination={setPagination}
+                status={status}
+                title="Track"
+            >
                 {data.tracks!.track.map((tr) => {
                     return (
                         <SongCard
@@ -67,18 +73,18 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                         />
                     );
                 })}
-                <PaginationBar
-                    isPreviousData={isPreviousData}
-                    pagination={pagination}
-                    setPagination={setPagination}
-                    status={status}
-                />
             </ListLayout>
         );
     } else if (data?.hasOwnProperty("results")) {
         if (data?.results!.artistmatches) {
             return (
-                <ListLayout>
+                <ListLayout
+                    isPreviousData={isPreviousData}
+                    pagination={pagination}
+                    setPagination={setPagination}
+                    status={status}
+                    title="Artist"
+                >
                     {data.results.artistmatches!.artist.map((art) => {
                         return (
                             <ArtistCard
@@ -87,17 +93,17 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                             />
                         );
                     })}
-                    <PaginationBar
-                        isPreviousData={isPreviousData}
-                        pagination={pagination}
-                        setPagination={setPagination}
-                        status={status}
-                    />
                 </ListLayout>
             );
         } else if (data.results!.trackmatches) {
             return (
-                <ListLayout>
+                <ListLayout
+                    isPreviousData={isPreviousData}
+                    pagination={pagination}
+                    setPagination={setPagination}
+                    status={status}
+                    title="Track"
+                >
                     {data.results!.trackmatches!.track.map((tr) => {
                         return (
                             <SongCard
@@ -107,12 +113,6 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                             />
                         );
                     })}
-                    <PaginationBar
-                        isPreviousData={isPreviousData}
-                        pagination={pagination}
-                        setPagination={setPagination}
-                        status={status}
-                    />
                 </ListLayout>
             );
         }
