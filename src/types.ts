@@ -166,7 +166,9 @@ export enum ShowBy {
     Track = "topTrack",
 }
 
-export enum Method {
-    artist = "artist.search",
-    track = "track.search",
+export enum QueryMethod {
+    searchArtist = "artist.search",
+    searchTrack = "track.search",
+    byArtist = "chart.gettopartists",
+    byTrack = "chart.gettoptracks",
 }
