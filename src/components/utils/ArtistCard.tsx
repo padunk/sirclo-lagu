@@ -39,7 +39,7 @@ const ArtistCard = ({ artist, viewStyle }: Props) => {
         let result: { data: { artist: ArtistInfo } };
         try {
             result = await axios.get(
-                `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURI(
+                `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURI(
                     artist
                 )}&api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json`
             );
