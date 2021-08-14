@@ -26,7 +26,7 @@ export function generateEndPoint({
     _limit,
     query,
 }: UseFetchListsProps): string {
-    const baseURL = "http://ws.audioscrobbler.com/2.0/";
+    const baseURL = "https://ws.audioscrobbler.com/2.0/";
     const endURL = `api_key=${process.env.VITE_LAST_FM_API_KEY}&format=json`;
     let page = _page ? _page : 1;
     let limit = _limit ? _limit : 24;
