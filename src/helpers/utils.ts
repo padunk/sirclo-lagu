@@ -44,3 +44,19 @@ export function generateEndPoint({
             throw new Error("method is unknown");
     }
 }
+
+export function parsingWikiContent(content: string) {
+    let text: string;
+    let textStopIndex = content.indexOf("<a");
+    text = content.slice(0, textStopIndex);
+
+    let href: string;
+    let hrefStartIndex = content.indexOf("href");
+    let hrefStopIndex = content.indexOf('">');
+    href = content.slice(hrefStartIndex + 6, hrefStopIndex);
+
+    return {
+        text,
+        href,
+    };
+}
