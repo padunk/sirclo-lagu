@@ -16,11 +16,16 @@ import Stats from "./Stats";
 import Tags from "./Tags";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import { useState } from "react";
-import { customAvatarTemplate, isTemplateImage } from "../../helpers/utils";
+import {
+    customAvatarTemplate,
+    isTemplateImage,
+    parsingWikiContent,
+} from "../../helpers/utils";
 import CardLayout from "./CardLayout";
 import CardLoader from "./CardLoader";
 import ErrorCard from "./ErrorCard";
 import { ViewStyle } from "../core/MainDisplay";
+import ImageTemplate from "./ImageTemplate";
 
 interface Props {
     artist: string;
@@ -61,14 +66,11 @@ const ArtistCard = ({ artist, viewStyle }: Props) => {
     if (data === undefined) {
         return (
             <CardLayout viewStyle={viewStyle}>
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    mr={viewStyle === ViewStyle.List ? "24px" : "0"}
-                >
-                    <Image src={customAvatarTemplate} />
-                </Box>
+                <ImageTemplate
+                    src={customAvatarTemplate}
+                    alt="template image"
+                    viewStyle={viewStyle}
+                />
                 <Flex direction="column" mt="4">
                     <Heading
                         as="h2"
@@ -85,25 +87,24 @@ const ArtistCard = ({ artist, viewStyle }: Props) => {
 
     return (
         <CardLayout viewStyle={viewStyle}>
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                mr={viewStyle === ViewStyle.List ? "24px" : "0"}
-            >
-                {data.image[2]["#text"] === "" ? (
-                    <Image src={customAvatarTemplate} />
-                ) : (
-                    <Image
-                        src={
-                            isTemplateImage(data?.image[2]["#text"])
-                                ? customAvatarTemplate
-                                : data?.image[2]["#text"]
-                        }
-                    />
-                )}
-            </Box>
-            <Flex direction="column" mt="4">
+            {data.image[2]["#text"] === "" ? (
+                <ImageTemplate
+                    src={customAvatarTemplate}
+                    alt={data?.name}
+                    viewStyle={viewStyle}
+                />
+            ) : (
+                <ImageTemplate
+                    src={
+                        isTemplateImage(data?.image[2]["#text"])
+                            ? customAvatarTemplate
+                            : data?.image[2]["#text"]
+                    }
+                    alt={data?.name}
+                    viewStyle={viewStyle}
+                />
+            )}
+            <Flex direction="column" mt="4" flexGrow={2}>
                 <LinkOverlay href={data?.url}>
                     <Heading
                         as="h2"
@@ -119,7 +120,17 @@ const ArtistCard = ({ artist, viewStyle }: Props) => {
                     listeners={data?.stats.listeners}
                 />
                 {viewStyle === ViewStyle.List && (
-                    <Text>{data?.bio.summary}</Text>
+                    <Box
+                        as="a"
+                        href={parsingWikiContent(data?.bio.summary).href}
+                    >
+                        <Heading as="h4" fontSize="lg">
+                            Artist Wiki:
+                        </Heading>
+                        <Text>
+                            {parsingWikiContent(data?.bio.summary).text}
+                        </Text>
+                    </Box>
                 )}
                 <Tags tag={data?.tags.tag} />
 
