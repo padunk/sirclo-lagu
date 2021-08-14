@@ -2,15 +2,16 @@ import { Avatar, Box, Tag, TagLabel } from "@chakra-ui/react";
 import React from "react";
 import { customAvatarTemplate, isTemplateImage } from "../../helpers/utils";
 import { ArtistSimilar } from "../../types";
+import { ViewStyle } from "../core/MainDisplay";
 
 interface Props {
     artist: ArtistSimilar[];
+    viewStyle: ViewStyle;
 }
 
-const SimilarArtist = ({ artist }: Props) => {
-    console.log(artist);
+const SimilarArtist = ({ artist, viewStyle }: Props) => {
     return (
-        <>
+        <Box display={viewStyle === ViewStyle.Grid ? "block" : "flex"} mt="4">
             {artist &&
                 artist.map((artis) => {
                     return (
@@ -37,7 +38,7 @@ const SimilarArtist = ({ artist }: Props) => {
                         </Box>
                     );
                 })}
-        </>
+        </Box>
     );
 };
 

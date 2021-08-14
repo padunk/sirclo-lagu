@@ -1,9 +1,11 @@
 import { LinkBox } from "@chakra-ui/react";
 import React from "react";
+import { ViewStyle } from "../core/MainDisplay";
 import CardErrorBoundary from "./CardErrorBoundary";
 
 interface Props {
     children: React.ReactNode;
+    viewStyle: ViewStyle;
 }
 
 const CardLayout = (props: Props) => {
@@ -12,7 +14,9 @@ const CardLayout = (props: Props) => {
             <LinkBox
                 as="div"
                 d="flex"
-                flexDirection="column"
+                flexDirection={
+                    props.viewStyle === ViewStyle.Grid ? "column" : "row"
+                }
                 p="8"
                 shadow="lg"
                 border="1px"

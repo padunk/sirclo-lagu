@@ -8,13 +8,15 @@ import ListLoader from "../utils/ListLoader";
 import PaginationBar from "../utils/PaginationBar";
 import SearchTemplate from "../utils/SearchTemplate";
 import SongCard from "../utils/SongCard";
+import { ViewStyle } from "./MainDisplay";
 
 interface Props {
     queryMethod: QueryMethod;
     searchTerms?: string;
+    viewStyle: ViewStyle;
 }
 
-const ListResult = ({ searchTerms, queryMethod }: Props) => {
+const ListResult = ({ searchTerms, viewStyle, queryMethod }: Props) => {
     const [pagination, setPagination] = useState<Attributes>({
         page: "1", // page number can not exceed 1_000_000
         perPage: "",
@@ -44,12 +46,14 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                 setPagination={setPagination}
                 status={status}
                 title="Artist"
+                viewStyle={viewStyle}
             >
                 {data.artists!.artist.map((art) => {
                     return (
                         <ArtistCard
                             key={`${art.name}-${art.mbid}`}
                             artist={art.name}
+                            viewStyle={viewStyle}
                         />
                     );
                 })}
@@ -63,6 +67,7 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                 setPagination={setPagination}
                 status={status}
                 title="Track"
+                viewStyle={viewStyle}
             >
                 {data.tracks!.track.map((tr) => {
                     return (
@@ -70,6 +75,7 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                             key={`${tr.name} - ${tr.artist.mbid}`}
                             artist={tr.artist.name}
                             title={tr.name}
+                            viewStyle={viewStyle}
                         />
                     );
                 })}
@@ -84,12 +90,14 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                     setPagination={setPagination}
                     status={status}
                     title="Artist"
+                    viewStyle={viewStyle}
                 >
                     {data.results.artistmatches!.artist.map((art) => {
                         return (
                             <ArtistCard
                                 key={`${art.name}-${art.mbid}`}
                                 artist={art.name}
+                                viewStyle={viewStyle}
                             />
                         );
                     })}
@@ -103,6 +111,7 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                     setPagination={setPagination}
                     status={status}
                     title="Track"
+                    viewStyle={viewStyle}
                 >
                     {data.results!.trackmatches!.track.map((tr) => {
                         return (
@@ -110,6 +119,7 @@ const ListResult = ({ searchTerms, queryMethod }: Props) => {
                                 key={`${tr.name} - ${tr.artist}`}
                                 artist={tr.artist}
                                 title={tr.name}
+                                viewStyle={viewStyle}
                             />
                         );
                     })}

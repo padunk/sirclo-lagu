@@ -2,14 +2,16 @@ import React from "react";
 import { StackDivider, VStack } from "@chakra-ui/react";
 import { QueryMethod } from "../../types";
 import ListResult from "./ListResult";
+import { ViewStyle } from "./MainDisplay";
 
 interface Props {
     listBy: QueryMethod | string;
+    viewStyle: ViewStyle;
 }
 
-const List = ({ listBy }: Props) => {
+const List = ({ listBy, viewStyle }: Props) => {
     if (listBy === QueryMethod.byArtist || listBy === QueryMethod.byTrack) {
-        return <ListResult queryMethod={listBy} />;
+        return <ListResult queryMethod={listBy} viewStyle={viewStyle} />;
     } else {
         return (
             <VStack
@@ -22,10 +24,12 @@ const List = ({ listBy }: Props) => {
                 <ListResult
                     queryMethod={QueryMethod.searchArtist}
                     searchTerms={listBy}
+                    viewStyle={viewStyle}
                 />
                 <ListResult
                     queryMethod={QueryMethod.searchTrack}
                     searchTerms={listBy}
+                    viewStyle={viewStyle}
                 />
             </VStack>
         );

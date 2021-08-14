@@ -19,13 +19,16 @@ import {
 } from "../../context/LoadingContext";
 import { QueryMethod } from "../../types";
 import SearchModal from "../utils/SearchModal";
+import { ViewStyle } from "./MainDisplay";
 
 interface Props {
     listBy: string;
     setListBy: Dispatch<React.SetStateAction<string>>;
+    viewStyle: ViewStyle;
+    setViewStyle: Dispatch<React.SetStateAction<ViewStyle>>;
 }
 
-const ListMenu = ({ listBy, setListBy }: Props) => {
+const ListMenu = ({ listBy, setListBy, setViewStyle, viewStyle }: Props) => {
     const { globalStatus } = useContext<FetchStatusValue>(FetchStatusContext);
     const isDisabled = !globalStatus.every((stat) => stat === "success");
 
@@ -105,10 +108,23 @@ const ListMenu = ({ listBy, setListBy }: Props) => {
                 setListBy={setListBy}
             />
 
-            {/* <Flex alignItems="center">
-                <BsFillGrid3X3GapFill />
-                <BsListUl />
-            </Flex> */}
+            <Flex
+                alignItems="center"
+                as="button"
+                onClick={() =>
+                    setViewStyle(() =>
+                        viewStyle === ViewStyle.Grid
+                            ? ViewStyle.List
+                            : ViewStyle.Grid
+                    )
+                }
+            >
+                {viewStyle === ViewStyle.Grid ? (
+                    <BsListUl />
+                ) : (
+                    <BsFillGrid3X3GapFill />
+                )}
+            </Flex>
         </Flex>
     );
 };

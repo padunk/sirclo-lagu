@@ -9,13 +9,15 @@ import { customCoverTemplate, isTemplateImage } from "../../helpers/utils";
 import CardLayout from "./CardLayout";
 import ErrorCard from "./ErrorCard";
 import CardLoader from "./CardLoader";
+import { ViewStyle } from "../core/MainDisplay";
 
 interface Props {
     artist: string;
     title: string;
+    viewStyle: ViewStyle;
 }
 
-const SongCard = ({ artist, title }: Props) => {
+const SongCard = ({ artist, title, viewStyle }: Props) => {
     const getTrackInfo = async () => {
         let result: { data: { track: TrackInfo } };
         try {
@@ -40,7 +42,7 @@ const SongCard = ({ artist, title }: Props) => {
 
     if (isLoading) {
         return (
-            <CardLayout>
+            <CardLayout viewStyle={viewStyle}>
                 <CardLoader />;
             </CardLayout>
         );
@@ -48,8 +50,13 @@ const SongCard = ({ artist, title }: Props) => {
 
     if (data === undefined) {
         return (
-            <CardLayout>
-                <Box display="flex" justifyContent="center" alignItems="center">
+            <CardLayout viewStyle={viewStyle}>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    mr={viewStyle === ViewStyle.List ? "24px" : "0"}
+                >
                     <Image
                         src={customCoverTemplate}
                         alt={artist}
@@ -76,8 +83,13 @@ const SongCard = ({ artist, title }: Props) => {
     }
 
     return (
-        <CardLayout>
-            <Box display="flex" justifyContent="center" alignItems="center">
+        <CardLayout viewStyle={viewStyle}>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mr={viewStyle === ViewStyle.List ? "24px" : "0"}
+            >
                 {data?.album ? (
                     <Image
                         src={

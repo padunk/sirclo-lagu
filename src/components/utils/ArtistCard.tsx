@@ -5,6 +5,7 @@ import {
     Heading,
     Image,
     LinkOverlay,
+    Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
@@ -19,12 +20,14 @@ import { customAvatarTemplate, isTemplateImage } from "../../helpers/utils";
 import CardLayout from "./CardLayout";
 import CardLoader from "./CardLoader";
 import ErrorCard from "./ErrorCard";
+import { ViewStyle } from "../core/MainDisplay";
 
 interface Props {
     artist: string;
+    viewStyle: ViewStyle;
 }
 
-const ArtistCard = ({ artist }: Props) => {
+const ArtistCard = ({ artist, viewStyle }: Props) => {
     const [expandSimilarArtist, setexpandSimilarArtist] = useState(false);
 
     const getArtistInfo = async () => {
@@ -49,7 +52,7 @@ const ArtistCard = ({ artist }: Props) => {
 
     if (isLoading) {
         return (
-            <CardLayout>
+            <CardLayout viewStyle={viewStyle}>
                 <CardLoader />
             </CardLayout>
         );
@@ -57,8 +60,13 @@ const ArtistCard = ({ artist }: Props) => {
 
     if (data === undefined) {
         return (
-            <CardLayout>
-                <Box display="flex" justifyContent="center" alignItems="center">
+            <CardLayout viewStyle={viewStyle}>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    mr={viewStyle === ViewStyle.List ? "24px" : "0"}
+                >
                     <Image src={customAvatarTemplate} />
                 </Box>
                 <Flex direction="column" mt="4">
@@ -76,8 +84,13 @@ const ArtistCard = ({ artist }: Props) => {
     }
 
     return (
-        <CardLayout>
-            <Box display="flex" justifyContent="center" alignItems="center">
+        <CardLayout viewStyle={viewStyle}>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mr={viewStyle === ViewStyle.List ? "24px" : "0"}
+            >
                 {data.image[2]["#text"] === "" ? (
                     <Image src={customAvatarTemplate} />
                 ) : (
@@ -105,6 +118,9 @@ const ArtistCard = ({ artist }: Props) => {
                     playcount={data?.stats.playcount}
                     listeners={data?.stats.listeners}
                 />
+                {viewStyle === ViewStyle.List && (
+                    <Text>{data?.bio.summary}</Text>
+                )}
                 <Tags tag={data?.tags.tag} />
 
                 <Button
@@ -119,7 +135,10 @@ const ArtistCard = ({ artist }: Props) => {
                 </Button>
 
                 {expandSimilarArtist && data?.similar.artist && (
-                    <SimilarArtist artist={data?.similar.artist} />
+                    <SimilarArtist
+                        artist={data?.similar.artist}
+                        viewStyle={viewStyle}
+                    />
                 )}
             </Flex>
         </CardLayout>

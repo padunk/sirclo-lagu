@@ -8,7 +8,13 @@ import ListMenu from "./ListMenu";
 
 interface Props {}
 
+export enum ViewStyle {
+    Grid = "grid",
+    List = "list",
+}
+
 const MainDisplay = (props: Props) => {
+    const [viewStyle, setViewStyle] = useState<ViewStyle>(ViewStyle.Grid);
     const [listBy, setListBy] = useState<QueryMethod | string>(
         QueryMethod.byArtist
     );
@@ -16,9 +22,14 @@ const MainDisplay = (props: Props) => {
     return (
         <FetchStatusProvider>
             <Flex direction="column" flexGrow={2}>
-                <ListMenu listBy={listBy} setListBy={setListBy} />
+                <ListMenu
+                    listBy={listBy}
+                    setListBy={setListBy}
+                    viewStyle={viewStyle}
+                    setViewStyle={setViewStyle}
+                />
                 <ListErrorBoundary>
-                    <List listBy={listBy} />
+                    <List listBy={listBy} viewStyle={viewStyle} />
                 </ListErrorBoundary>
             </Flex>
         </FetchStatusProvider>
