@@ -6,6 +6,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { MainHeader, Footer, ListMenu, SearchModal } from "../components/index";
 import theme from "../../theme";
 import { myLinks } from "../components/core/Footer";
+import { ViewStyle } from "../components/core/MainDisplay";
 
 afterEach(cleanup);
 
@@ -42,6 +43,8 @@ test("should shows menu element", () => {
         onChange: jest.fn(),
         listBy: "",
         setListBy: jest.fn(),
+        viewStyle: ViewStyle.Grid,
+        setViewStyle: jest.fn(),
     };
 
     const { container } = render(
@@ -68,6 +71,8 @@ test("should select show-by onChange is working", () => {
         onChange: jest.fn(),
         listBy: "",
         setListBy: jest.fn(),
+        viewStyle: ViewStyle.Grid,
+        setViewStyle: jest.fn(),
     };
 
     const { container } = render(
@@ -85,6 +90,8 @@ test("should input search working", async () => {
         onChange: jest.fn(),
         listBy: "",
         setListBy: jest.fn(),
+        viewStyle: ViewStyle.Grid,
+        setViewStyle: jest.fn(),
     };
 
     const { container } = render(
@@ -107,6 +114,8 @@ test("should shows modal, its children and close when submit", () => {
         isOpen: true,
         onClose: jest.fn(),
         setListBy: jest.fn(),
+        viewStyle: ViewStyle.Grid,
+        setViewStyle: jest.fn(),
     };
     const { queryByRole } = render(
         <ThemeProvider theme={theme}>
