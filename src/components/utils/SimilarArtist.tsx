@@ -11,7 +11,11 @@ interface Props {
 
 const SimilarArtist = ({ artist, viewStyle }: Props) => {
     return (
-        <Box display={viewStyle === ViewStyle.Grid ? "block" : "flex"} mt="4">
+        <Box
+            display={viewStyle === ViewStyle.Grid ? "block" : "flex"}
+            mt="4"
+            flexWrap="wrap"
+        >
             {artist &&
                 artist.map((artis) => {
                     return (
